@@ -1,111 +1,256 @@
 # Task Management API
 
-A production-style RESTful Task Management API built with **Python, Django REST Framework, and PostgreSQL**.
+A production-style **REST API for managing tasks**, built to help users organize, prioritize, track, and complete their work through a secure backend service.
 
-The API provides authenticated users with tools to create and manage tasks, update task status, organize tasks by category and priority, filter and order results, and manage recurring tasks.
+The project demonstrates practical backend development using **Python, Django REST Framework, PostgreSQL, Docker, automated testing, caching, and cloud deployment**.
 
 ## 🌐 Live API
 
 **Base URL:**
 https://task-management-api-wpw5.onrender.com/api/
 
-The API is deployed on **Render** and can be used for testing.
+The API is deployed on Render and can be used to explore the backend.
 
-## 🚀 Features
+---
 
-* User authentication
-* Authenticated task management
-* Create, view, update, and delete tasks
-* Task status workflow
+## 🎯 The Problem
 
-  * Pending
-  * In Progress
-  * Completed
-  * Cancelled
-* Task priority management
-* Task categories
-* Filtering by task fields
-* Ordering and sorting
+Managing tasks becomes difficult when users need more than simple to-do lists.
+
+A useful task management system should allow users to:
+
+* Create and manage their own tasks
+* Track progress
+* Set priorities and deadlines
+* Organize tasks into categories
+* Filter and sort tasks
+* Handle recurring work
+* Protect user data
+* Provide a reliable API that frontend or mobile applications can consume
+
+## 💡 The Solution
+
+I built this API as a backend service that provides these capabilities through RESTful endpoints.
+
+The system handles authentication, task ownership, task workflows, filtering, recurring tasks, validation, automated testing, database operations, and deployment.
+
+The API can serve as the backend for a **web application, mobile application, or other client application**.
+
+---
+
+# 🚀 Key Features
+
+### 🔐 Authentication & User Management
+
+* User registration
+* User login
+* Token-based authentication
+* User logout
+* Protected endpoints
+* User-specific task access
+* Permission-based access
+
+### 📋 Task Management
+
+Users can:
+
+* Create tasks
+* View tasks
+* Update tasks
+* Delete tasks
+* Complete tasks
+* Set due dates
+* Set priorities
+* Assign categories
+* Track completion time
+
+### 🔄 Task Workflow
+
+Tasks support:
+
+```text
+PENDING
+   ↓
+IN_PROGRESS
+   ↓
+COMPLETED
+```
+
+Tasks can also be marked:
+
+```text
+CANCELLED
+```
+
+When a task is completed, the API records its completion time.
+
+### 🔁 Recurring Tasks
+
+The API supports:
+
+* Daily tasks
+* Weekly tasks
+* Monthly tasks
+
+When a recurring task is completed, the system can automatically create the next task based on its recurrence setting.
+
+### 🔎 Filtering
+
+Tasks can be filtered by:
+
+* Status
+* Priority
+* Due date
+* Category
+
+Example:
+
+```text
+/api/tasks/?status=PENDING&priority=HIGH
+```
+
+### ↕️ Ordering
+
+Tasks can be ordered by:
+
+* Due date
+* Priority
+
+Example:
+
+```text
+/api/tasks/?ordering=-due_date
+```
+
+### 📄 Pagination
+
+Task results are paginated to make the API more practical when working with larger datasets.
+
+### ⚡ Caching
+
+The project includes caching support to reduce unnecessary database operations and improve API performance.
+
+### 🧪 Automated Testing
+
+The project includes automated tests covering important backend behavior such as:
+
+* User creation
+* Authentication
+* Task creation
+* Task status changes
+* Task completion
 * Recurring tasks
+* Filtering
+* Ordering
+* Category functionality
 
-  * Daily
-  * Weekly
-  * Monthly
-* Automatic handling of completed recurring tasks
-* Automated tests
-* PostgreSQL database support
-* Docker support
-* Production deployment with Gunicorn
-* Render deployment
+Run the tests with:
 
-## 🛠️ Tech Stack
+```bash
+pytest -v
+```
 
-* **Python**
-* **Django**
-* **Django REST Framework**
-* **PostgreSQL**
-* **Docker**
-* **Gunicorn**
-* **Pytest**
-* **Render**
+### 🐳 Docker
 
-## 🏗️ Project Structure
+The application includes Docker configuration for consistent development and deployment environments.
+
+```bash
+docker compose up --build
+```
+
+### ☁️ Deployment
+
+The API is deployed on **Render** using Django and Gunicorn.
+
+The deployment demonstrates experience with:
+
+* Production Django settings
+* PostgreSQL
+* Gunicorn
+* Docker
+* Static files
+* Environment configuration
+* Cloud deployment
+
+---
+
+# 🛠️ Technology Stack
+
+| Technology            | Purpose                           |
+| --------------------- | --------------------------------- |
+| Python                | Backend programming               |
+| Django                | Web framework                     |
+| Django REST Framework | REST API development              |
+| PostgreSQL            | Relational database               |
+| Redis                 | Caching/background infrastructure |
+| Celery                | Background task processing        |
+| Docker                | Containerization                  |
+| Gunicorn              | Production application server     |
+| Pytest                | Automated testing                 |
+| Render                | Cloud deployment                  |
+| Git/GitHub            | Version control                   |
+
+---
+
+# 🏗️ Project Structure
 
 ```text
 Task_Management_API/
 │
-├── accounts/              # User authentication and account functionality
-├── Tasks/                 # Task management functionality
-├── taskhub/               # Django project configuration
-├── Dockerfile             # Docker configuration
-├── docker-compose.yml     # Local container configuration
-├── requirements.txt       # Python dependencies
-└── manage.py              # Django management commands
+├── accounts/                 # Authentication and user functionality
+├── Tasks/                    # Task management functionality
+├── taskhub/                  # Django project configuration
+├── Dockerfile                # Docker configuration
+├── docker-compose.yml        # Container configuration
+├── requirements.txt          # Python dependencies
+├── pytest.ini                # Test configuration
+└── manage.py                 # Django management commands
 ```
 
-## ⚙️ Getting Started
+---
 
-### 1. Clone the repository
+# ⚙️ Getting Started
+
+## 1. Clone the repository
 
 ```bash
 git clone https://github.com/otieno-backend/Task_Management_API.git
-
 cd Task_Management_API
 ```
 
-### 2. Create a virtual environment
+## 2. Create a virtual environment
 
 ```bash
 python -m venv venv
 ```
 
-### 3. Activate the virtual environment
+## 3. Activate the virtual environment
 
-#### Windows
+### Windows
 
 ```bash
 venv\Scripts\activate
 ```
 
-#### Linux/macOS
+### Linux/macOS
 
 ```bash
 source venv/bin/activate
 ```
 
-### 4. Install dependencies
+## 4. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 5. Run database migrations
+## 5. Run migrations
 
 ```bash
 python manage.py migrate
 ```
 
-### 6. Start the development server
+## 6. Start the development server
 
 ```bash
 python manage.py runserver
@@ -117,314 +262,87 @@ The API will be available at:
 http://127.0.0.1:8000/
 ```
 
-## 🔐 Authentication
+---
+
+# 🔐 Authentication
 
 The API uses token-based authentication.
 
-After authentication, include the token in API requests:
+After logging in, include the token in protected requests:
 
-```text
-Authorization: Token YOUR_TOKEN
-```
-
-Authenticated users can access and manage their tasks according to the application's permissions.
-
-## 📋 Example API Endpoints
-
-| Method    | Endpoint           | Description         |
-| --------- | ------------------ | ------------------- |
-| POST      | `/api/...`         | User authentication |
-| GET       | `/api/tasks/`      | List tasks          |
-| POST      | `/api/tasks/`      | Create a task       |
-| GET       | `/api/tasks/<id>/` | View a task         |
-| PUT/PATCH | `/api/tasks/<id>/` | Update a task       |
-| DELETE    | `/api/tasks/<id>/` | Delete a task       |
-
-> Check the project's URL configuration for the complete list of available endpoints.
-
-## 🔎 Task Management
-
-Tasks support several fields and workflows, including:
-
-* Title
-* Description
-* Status
-* Priority
-* Category
-* Due date
-* Recurrence
-
-Supported statuses:
-
-```text
-PENDING
-IN_PROGRESS
-COMPLETED
-CANCELLED
-```
-
-Supported recurrence options:
-
-```text
-NONE
-DAILY
-WEEKLY
-MONTHLY
-```
-
-## 🧪 Testing
-
-The project includes automated tests covering important API behavior, including:
-
-* Task creation
-* Authentication
-* Task status changes
-* Task completion
-* Recurring task behavior
-* Category filtering
-* Status filtering
-* Priority filtering
-* Ordering
-
-Run the test suite with:
-
-```bash
-pytest -v
-```
-
-## 🐳 Docker
-
-The project includes Docker configuration for running the application in containers.
-
-Build and start the services with:
-
-```bash
-docker compose up --build
-```
-
-## 🚀 Deployment
-
-The application is deployed on **Render** using Django and Gunicorn.
-
-Production deployment demonstrates experience with:
-
-* Environment configuration
-* PostgreSQL
-* Gunicorn
-* Docker
-* Static files
-* Production Django settings
-* Cloud deployment
-
-## API Documentation
-
-The API uses token authentication for protected endpoints.
-
-### Base URL
-
-```text
-https://task-management-api-wpw5.onrender.com/api/
-```
-
-### Authentication
-
-Protected endpoints require a token in the request header:
-
-```text
+```http
 Authorization: Token YOUR_TOKEN
 ```
 
 ---
 
-## Authentication Endpoints
+# 📋 API Endpoints
 
-### Register a User
-
-**POST** `/api/register/`
-
-Create a new user account.
-
-#### Request
-
-```json
-{
-  "username": "brian",
-  "email": "brian@example.com",
-  "password": "yourpassword"
-}
-```
-
-#### Response
-
-```json
-{
-  "message": "User created successfully",
-  "token": "YOUR_TOKEN",
-  "user": {
-    "id": 1,
-    "username": "brian",
-    "email": "brian@example.com"
-  }
-}
-```
-
-### Login
-
-**POST** `/api/login/`
-
-Authenticate a user and receive an API token.
-
-#### Request
-
-```json
-{
-  "username": "brian",
-  "password": "yourpassword"
-}
-```
-
-#### Response
-
-```json
-{
-  "message": "Login successful",
-  "token": "YOUR_TOKEN",
-  "user": {
-    "id": 1,
-    "username": "brian",
-    "email": "brian@example.com"
-  }
-}
-```
-
-### Logout
-
-**POST** `/api/logout/`
-
-Logs out the authenticated user and removes their authentication token.
-
-```text
-Authorization: Token YOUR_TOKEN
-```
-
-#### Response
-
-```json
-{
-  "message": "Logged out successfully"
-}
-```
+| Method | Endpoint                    | Description       |
+| ------ | --------------------------- | ----------------- |
+| POST   | `/api/register/`            | Register a user   |
+| POST   | `/api/login/`               | Login             |
+| POST   | `/api/logout/`              | Logout            |
+| GET    | `/api/tasks/`               | List tasks        |
+| POST   | `/api/tasks/`               | Create a task     |
+| GET    | `/api/tasks/<id>/`          | Get a task        |
+| PATCH  | `/api/tasks/<id>/`          | Update a task     |
+| DELETE | `/api/tasks/<id>/`          | Delete a task     |
+| PATCH  | `/api/tasks/<id>/complete/` | Complete a task   |
+| GET    | `/api/categories/`          | List categories   |
+| POST   | `/api/categories/`          | Create a category |
+| GET    | `/api/user/dashboard/`      | User dashboard    |
+| GET    | `/api/admin/dashboard/`     | Admin dashboard   |
 
 ---
 
-## Task Endpoints
+# 📝 Example: Create a Task
 
-All task endpoints require authentication.
-
-### List Tasks
-
-**GET** `/api/tasks/`
-
-Returns tasks belonging to the authenticated user.
-
-```bash
-curl -X GET https://task-management-api-wpw5.onrender.com/api/tasks/ \
-  -H "Authorization: Token YOUR_TOKEN"
+```http
+POST /api/tasks/
+Authorization: Token YOUR_TOKEN
+Content-Type: application/json
 ```
-
-### Create a Task
-
-**POST** `/api/tasks/`
-
-Create a new task.
-
-#### Request
 
 ```json
 {
   "title": "Complete Django API project",
   "description": "Finish API documentation and testing",
-  "due_date": "2026-10-01T10:00:00Z",
   "priority": "HIGH",
   "status": "PENDING",
   "recurrence": "NONE"
 }
 ```
 
-A category can be assigned using `category_id`:
-
-```json
-{
-  "title": "Complete Django API project",
-  "description": "Finish API documentation",
-  "priority": "HIGH",
-  "status": "PENDING",
-  "recurrence": "NONE",
-  "category_id": 1
-}
-```
-
-The authenticated user is automatically assigned to the task.
-
-### Get a Single Task
-
-**GET** `/api/tasks/{id}/`
-
-Example:
-
-```text
-GET /api/tasks/1/
-```
-
-### Update a Task
-
-**PATCH** `/api/tasks/{id}/`
-
-Example:
-
-```json
-{
-  "status": "IN_PROGRESS"
-}
-```
-
-Tasks that are already completed have restricted updates.
-
-### Delete a Task
-
-**DELETE** `/api/tasks/{id}/`
-
-Example:
-
-```text
-DELETE /api/tasks/1/
-```
-
-### Complete a Task
-
-**PATCH** `/api/tasks/{id}/complete/`
-
-Marks a task as completed and records the completion time.
-
-```bash
-curl -X PATCH https://task-management-api-wpw5.onrender.com/api/tasks/1/complete/ \
-  -H "Authorization: Token YOUR_TOKEN"
-```
-
-For recurring tasks, completing a task can automatically create the next task based on its recurrence setting.
+The authenticated user is automatically associated with the task.
 
 ---
 
-## Task Fields
+# 🔄 Example: Complete a Task
+
+```http
+PATCH /api/tasks/1/complete/
+Authorization: Token YOUR_TOKEN
+```
+
+When a task is completed:
+
+* Its status changes to `COMPLETED`
+* `completed_at` is recorded
+* If the task is recurring, the next task can be created automatically
+
+---
+
+# 🗂️ Task Fields
 
 | Field          | Description            |
 | -------------- | ---------------------- |
 | `title`        | Task title             |
 | `description`  | Task description       |
-| `due_date`     | Optional task deadline |
+| `due_date`     | Optional deadline      |
 | `priority`     | Task priority          |
 | `status`       | Current task status    |
-| `category_id`  | Optional category ID   |
+| `category_id`  | Optional category      |
 | `recurrence`   | Recurring task setting |
 | `completed_at` | Completion timestamp   |
 | `created_at`   | Creation timestamp     |
@@ -458,41 +376,33 @@ MONTHLY
 
 ---
 
-## Filtering
+# 🔎 Filtering Examples
 
-Tasks support filtering by status, priority, due date, and category.
-
-### Filter by Status
+### Filter by status
 
 ```text
 /api/tasks/?status=COMPLETED
 ```
 
-### Filter by Priority
+### Filter by priority
 
 ```text
 /api/tasks/?priority=HIGH
 ```
 
-### Filter by Due Date
+### Filter by due date
 
 ```text
 /api/tasks/?due_date=2026-10-01
 ```
 
-### Filter by Category ID
-
-```text
-/api/tasks/?category=1
-```
-
-### Filter by Category Name
+### Filter by category
 
 ```text
 /api/tasks/?category=Work
 ```
 
-### Combine Filters
+### Combine filters
 
 ```text
 /api/tasks/?status=PENDING&priority=HIGH
@@ -500,245 +410,135 @@ Tasks support filtering by status, priority, due date, and category.
 
 ---
 
-## Ordering
+# 🧪 Testing
 
-Tasks support ordering by `due_date` and `priority`.
-
-### Order by Due Date
-
-```text
-/api/tasks/?ordering=due_date
-```
-
-### Reverse Due Date Order
-
-```text
-/api/tasks/?ordering=-due_date
-```
-
-### Order by Priority
-
-```text
-/api/tasks/?ordering=priority
-```
-
-### Reverse Priority Order
-
-```text
-/api/tasks/?ordering=-priority
-```
-
-If no supported ordering parameter is provided, tasks are ordered by newest first.
-
----
-
-## Category Endpoints
-
-Categories are linked to the authenticated user.
-
-### List Categories
-
-**GET** `/api/categories/`
-
-### Create Category
-
-**POST** `/api/categories/`
-
-#### Request
-
-```json
-{
-  "name": "Work"
-}
-```
-
-### Get a Category
-
-**GET** `/api/categories/{id}/`
-
-Example:
-
-```text
-GET /api/categories/1/
-```
-
-### Update a Category
-
-**PATCH** `/api/categories/{id}/`
-
-```json
-{
-  "name": "Personal"
-}
-```
-
-### Delete a Category
-
-**DELETE** `/api/categories/{id}/`
-
----
-
-## Task Workflow
-
-Tasks support four statuses:
-
-```text
-PENDING → IN_PROGRESS → COMPLETED
-```
-
-A task can also be marked:
-
-```text
-CANCELLED
-```
-
-When a task is completed, the API records the `completed_at` timestamp.
-
-Completed tasks have restricted updates to help preserve completion data.
-
----
-
-## Recurring Tasks
-
-Tasks support four recurrence options:
-
-* `NONE`
-* `DAILY`
-* `WEEKLY`
-* `MONTHLY`
-
-Example:
-
-```json
-{
-  "title": "Weekly project review",
-  "description": "Review project progress",
-  "priority": "MEDIUM",
-  "status": "PENDING",
-  "recurrence": "WEEKLY"
-}
-```
-
-When a recurring task is completed, the API calculates the next due date and creates the next pending task.
-
----
-
-## User Dashboards
-
-### User Dashboard
-
-**GET** `/api/user/dashboard/`
-
-Requires authentication.
-
-### Admin Dashboard
-
-**GET** `/api/admin/dashboard/`
-
-Requires authentication and the appropriate administrative permissions.
-
----
-
-## Testing
-
-The project includes automated tests covering areas such as:
-
-* User authentication
-* Task creation
-* Task status changes
-* Task completion
-* Recurring tasks
-* Category filtering
-* Status filtering
-* Priority filtering
-* Task ordering
-
-Run the tests with:
+Run the complete test suite:
 
 ```bash
 pytest -v
 ```
 
----
-
-## Example Authentication Flow
-
-### 1. Register
-
-```text
-POST /api/register/
-```
-
-### 2. Copy the returned token
-
-```text
-"token": "YOUR_TOKEN"
-```
-
-### 3. Add the token to protected requests
-
-```text
-Authorization: Token YOUR_TOKEN
-```
-
-### 4. Access the task API
-
-```text
-GET /api/tasks/
-```
-
-This allows an authenticated user to manage their own tasks.
+The tests help verify important application behavior before changes are deployed.
 
 ---
 
-## API Development Highlights
+# 🐳 Running with Docker
 
-This project demonstrates practical backend development using:
+Build and start the application:
 
-* Django REST Framework
-* RESTful API design
-* Token authentication
-* User-specific data
-* CRUD operations
-* Filtering and ordering
-* Task status workflows
-* Recurring tasks
+```bash
+docker compose up --build
+```
+
+Docker provides a consistent environment for running the application and its supporting services.
+
+---
+
+# ☁️ Production Deployment
+
+The application is deployed on Render.
+
+The deployment demonstrates practical experience with:
+
+* Django production configuration
 * PostgreSQL
-* Automated testing
-* Docker
 * Gunicorn
-* Render deployment
-* Response caching
+* Docker
+* Static files
+* Environment variables
+* Cloud deployment
+* Production debugging
 
+**Live API:**
 
-## 📚 What I Built
+https://task-management-api-wpw5.onrender.com/api/
 
-This project demonstrates my experience with:
+---
 
-* Building RESTful APIs with Django REST Framework
-* Designing database-backed applications
-* Implementing authentication and permissions
-* Building task workflows
-* Implementing filtering and ordering
-* Working with recurring tasks
-* Writing automated tests
-* Containerizing applications with Docker
-* Deploying backend applications
-* Debugging and improving production-style applications
+# 🧠 What This Project Demonstrates
 
-## 🔮 Future Improvements
+This project is more than a CRUD application.
 
+It demonstrates my ability to:
+
+* Design RESTful APIs
+* Build backend systems with Django
+* Work with relational databases
+* Implement authentication and permissions
+* Build user-specific data access
+* Design task workflows
+* Implement filtering and ordering
+* Handle recurring business logic
+* Write automated tests
+* Containerize applications
+* Work with caching and background processing
+* Deploy backend applications
+* Debug and improve production-style applications
+
+---
+
+# 📈 Development Approach
+
+The project was developed incrementally, with features added and tested step by step.
+
+The development process focused on:
+
+```text
+Problem
+   ↓
+Design
+   ↓
+Implementation
+   ↓
+Testing
+   ↓
+Debugging
+   ↓
+Deployment
+   ↓
+Improvement
+```
+
+This approach helped turn the project from a basic task API into a more production-oriented backend service.
+
+---
+
+# 🔮 Future Improvements
+
+Planned improvements include:
+
+* More comprehensive API documentation
 * CI/CD with GitHub Actions
+* Improved production monitoring
+* Application logging and metrics
+* Performance improvements
+* Additional background-processing features
+* Expanded test coverage
 
-## 👨‍💻 Author
+---
+
+# 👨‍💻 Author
 
 **Brian Otieno**
 
-Backend Developer focused on Python, Django, Django REST Framework, PostgreSQL, and REST APIs.
+Backend Developer focused on:
+
+* Python
+* Django
+* Django REST Framework
+* PostgreSQL
+* REST APIs
+* Docker
 
 GitHub:
 https://github.com/otieno-backend
 
-## ⭐ Project
+---
 
-If you find this project useful, feel free to star the repository.
+# ⭐ Project
+
+If you find the project useful, feel free to **star the repository**.
+
+Repository:
+
+https://github.com/otieno-backend/Task_Management_API
