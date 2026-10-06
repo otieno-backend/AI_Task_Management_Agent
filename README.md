@@ -1,310 +1,283 @@
-# Task Management API
+# AI Task Management Agent
 
-A production-style **REST API for managing tasks**, built to help users organize, prioritize, track, and complete their work through a secure backend service.
+An AI-ready task management system that combines a **Django REST API** with a **Model Context Protocol (MCP) server**.
 
-The project demonstrates practical backend development using **Python, Django REST Framework, PostgreSQL, Docker, automated testing, caching, and cloud deployment**.
-
-## 🌐 Live API
-
-**Base URL:**
-https://task-management-api-wpw5.onrender.com/api/
-
-The API is deployed on Render and can be used to explore the backend.
+The project allows an MCP-compatible AI client to interact with the task management backend through tools for creating, retrieving, updating, completing, and listing tasks.
 
 ---
 
-## 🎯 The Problem
+## 🚀 Project Overview
 
-Managing tasks becomes difficult when users need more than simple to-do lists.
-
-A useful task management system should allow users to:
-
-* Create and manage their own tasks
-* Track progress
-* Set priorities and deadlines
-* Organize tasks into categories
-* Filter and sort tasks
-* Handle recurring work
-* Protect user data
-* Provide a reliable API that frontend or mobile applications can consume
-
-## 💡 The Solution
-
-I built this API as a backend service that provides these capabilities through RESTful endpoints.
-
-The system handles authentication, task ownership, task workflows, filtering, recurring tasks, validation, automated testing, database operations, and deployment.
-
-The API can serve as the backend for a **web application, mobile application, or other client application**.
-
----
-
-# 🚀 Key Features
-
-### 🔐 Authentication & User Management
-
-* User registration
-* User login
-* Token-based authentication
-* User logout
-* Protected endpoints
-* User-specific task access
-* Permission-based access
-
-### 📋 Task Management
-
-Users can:
-
-* Create tasks
-* View tasks
-* Update tasks
-* Delete tasks
-* Complete tasks
-* Set due dates
-* Set priorities
-* Assign categories
-* Track completion time
-
-### 🔄 Task Workflow
-
-Tasks support:
+The project consists of two main components:
 
 ```text
+AI / MCP Client
+       │
+       ▼
+┌─────────────────────┐
+│     MCP Server      │
+│     Python + MCP    │
+└──────────┬──────────┘
+           │
+        HTTP API
+           │
+           ▼
+┌─────────────────────┐
+│    Django REST API  │
+│   Django + DRF      │
+└──────────┬──────────┘
+           │
+           ▼
+┌─────────────────────┐
+│      Database       │
+└─────────────────────┘
+
+The MCP server acts as a bridge between an AI client and the existing Django Task Management API.
+
+🤖 MCP Server
+
+The MCP server exposes task-management functionality as tools that an MCP-compatible client can call.
+
+Available MCP Tools
+Tool	Purpose
+hello_task_manager	Verify that the MCP server is working
+list_tasks	Retrieve tasks from the Django API
+create_task	Create a new task
+get_task	Retrieve a specific task
+update_task	Update an existing task
+complete_task	Mark a task as completed
+
+The MCP server communicates with the Django API using authenticated HTTP requests.
+
+📋 Task Management Features
+
+The Django backend supports:
+
+User registration and authentication
+Token-based authentication
+User-specific tasks
+Task creation and management
+Task status workflows
+Task priorities
+Due dates
+Categories
+Filtering
+Ordering
+Pagination
+Recurring tasks
+Completion timestamps
+Redis caching
+Automated testing
+Docker support
+Cloud deployment
+🔄 Task Workflow
+
+Tasks support the following statuses:
+
 PENDING
    ↓
 IN_PROGRESS
    ↓
 COMPLETED
-```
 
 Tasks can also be marked:
 
-```text
 CANCELLED
-```
 
-When a task is completed, the API records its completion time.
+When a task is completed, the API records the completion time.
 
-### 🔁 Recurring Tasks
+Recurring tasks can also create the next task based on their recurrence setting.
 
-The API supports:
+🔌 MCP → Django Integration
 
-* Daily tasks
-* Weekly tasks
-* Monthly tasks
+The MCP server does not directly access the Django database.
 
-When a recurring task is completed, the system can automatically create the next task based on its recurrence setting.
+Instead, it communicates with the Django REST API:
 
-### 🔎 Filtering
+MCP Tool
+   │
+   │ HTTP Request
+   ▼
+Django REST API
+   │
+   │ Authentication
+   ▼
+Task ViewSet
+   │
+   ▼
+Database
+   │
+   ▼
+Django Response
+   │
+   ▼
+MCP Tool
 
-Tasks can be filtered by:
+This separation keeps the MCP layer independent from the Django application's internal database logic.
 
-* Status
-* Priority
-* Due date
-* Category
+🧪 End-to-End Testing
 
-Example:
+The MCP integration has been tested through MCP Inspector.
 
-```text
-/api/tasks/?status=PENDING&priority=HIGH
-```
+The following workflow was successfully tested:
 
-### ↕️ Ordering
+Create Task
+    ↓
+Get Task
+    ↓
+Update Task
+    ↓
+Complete Task
+    ↓
+List Tasks
+Example test
 
-Tasks can be ordered by:
+A task was created through the MCP server:
 
-* Due date
-* Priority
+Title: End-to-End MCP Test
+Priority: HIGH
+Status: PENDING
 
-Example:
+It was then updated:
 
-```text
-/api/tasks/?ordering=-due_date
-```
+PENDING
+   ↓
+IN_PROGRESS
 
-### 📄 Pagination
+And completed:
 
-Task results are paginated to make the API more practical when working with larger datasets.
+IN_PROGRESS
+   ↓
+COMPLETED
 
-### ⚡ Caching
+The final list_tasks operation confirmed that the task was persisted by the Django backend.
 
-The project includes caching support to reduce unnecessary database operations and improve API performance.
-
-### 🧪 Automated Testing
-
-The project includes automated tests covering important backend behavior such as:
-
-* User creation
-* Authentication
-* Task creation
-* Task status changes
-* Task completion
-* Recurring tasks
-* Filtering
-* Ordering
-* Category functionality
-
-Run the tests with:
-
-```bash
-pytest -v
-```
-
-### 🐳 Docker
-
-The application includes Docker configuration for consistent development and deployment environments.
-
-```bash
-docker compose up --build
-```
-
-### ☁️ Deployment
-
-The API is deployed on **Render** using Django and Gunicorn.
-
-The deployment demonstrates experience with:
-
-* Production Django settings
-* PostgreSQL
-* Gunicorn
-* Docker
-* Static files
-* Environment configuration
-* Cloud deployment
-
----
-
-# 🛠️ Technology Stack
-
-| Technology            | Purpose                           |
-| --------------------- | --------------------------------- |
-| Python                | Backend programming               |
-| Django                | Web framework                     |
-| Django REST Framework | REST API development              |
-| PostgreSQL            | Relational database               |
-| Redis                 | Caching/background infrastructure |
-| Celery                | Background task processing        |
-| Docker                | Containerization                  |
-| Gunicorn              | Production application server     |
-| Pytest                | Automated testing                 |
-| Render                | Cloud deployment                  |
-| Git/GitHub            | Version control                   |
-
----
-
-# 🏗️ Project Structure
-
-```text
-Task_Management_API/
+🛠️ Technology Stack
+Technology	Purpose
+Python	Backend programming
+Django	Web framework
+Django REST Framework	REST API
+MCP	AI-to-application integration
+Requests	HTTP communication between MCP and Django
+PostgreSQL	Production database
+SQLite	Local development database
+Redis	Caching
+Celery	Background task processing
+Docker	Containerization
+Gunicorn	Production application server
+Pytest	Automated testing
+Render	Cloud deployment
+Git/GitHub	Version control
+📁 Project Structure
+AI_Task_Management_Agent/
 │
-├── accounts/                 # Authentication and user functionality
-├── Tasks/                    # Task management functionality
-├── taskhub/                  # Django project configuration
-├── Dockerfile                # Docker configuration
-├── docker-compose.yml        # Container configuration
-├── requirements.txt          # Python dependencies
-├── pytest.ini                # Test configuration
-└── manage.py                 # Django management commands
-```
+├── taskhub/
+│   ├── accounts/
+│   ├── Tasks/
+│   ├── taskhub/
+│   ├── manage.py
+│   ├── Dockerfile
+│   ├── docker-compose.yml
+│   ├── Procfile
+│   └── requirements.txt
+│
+├── mcp_server/
+│   ├── server.py
+│   ├── .env
+│   └── .venv/
+│
+├── .gitignore
+└── README.md
 
----
+.env and virtual environments are excluded from Git.
 
-# ⚙️ Getting Started
-
-## 1. Clone the repository
-
-```bash
-git clone https://github.com/otieno-backend/Task_Management_API.git
-cd Task_Management_API
-```
-
-## 2. Create a virtual environment
-
-```bash
-python -m venv venv
-```
-
-## 3. Activate the virtual environment
-
-### Windows
-
-```bash
-venv\Scripts\activate
-```
-
-### Linux/macOS
-
-```bash
-source venv/bin/activate
-```
-
-## 4. Install dependencies
-
-```bash
+⚙️ Django API Setup
+1. Enter the Django project
+cd taskhub
+2. Create a virtual environment
+python -m venv .venv
+3. Activate the virtual environment
+Windows Git Bash
+source .venv/Scripts/activate
+4. Install dependencies
 pip install -r requirements.txt
-```
-
-## 5. Run migrations
-
-```bash
+5. Run migrations
 python manage.py migrate
-```
-
-## 6. Start the development server
-
-```bash
+6. Start Django
 python manage.py runserver
-```
 
 The API will be available at:
 
-```text
 http://127.0.0.1:8000/
-```
+🤖 MCP Server Setup
 
----
+Open another terminal.
 
-# 🔐 Authentication
+1. Enter the MCP server directory
+cd mcp_server
+2. Create the virtual environment
+python -m venv .venv
+3. Activate it
+source .venv/Scripts/activate
+4. Install MCP
+python -m pip install "mcp[cli]"
 
-The API uses token-based authentication.
+Install the additional dependencies:
 
-After logging in, include the token in protected requests:
+pip install requests python-dotenv
+🔐 Environment Variables
 
-```http
+Create a .env file inside:
+
+mcp_server/.env
+
+Example:
+
+DJANGO_API_URL=http://127.0.0.1:8000/api
+DJANGO_API_TOKEN=YOUR_SECRET_TOKEN
+
+Replace YOUR_SECRET_TOKEN with a valid Django API token.
+
+Never commit your real token to GitHub.
+
+The project .gitignore excludes .env files.
+
+▶️ Running the MCP Server
+
+Make sure Django is running first.
+
+From the mcp_server directory:
+
+mcp dev server.py
+
+This starts the MCP development environment and opens MCP Inspector.
+
+MCP Inspector can then be used to test the available tools.
+
+🔑 Authentication
+
+The Django API uses token authentication.
+
+Protected API requests use:
+
 Authorization: Token YOUR_TOKEN
-```
 
----
+The MCP server reads the token from the environment instead of hard-coding it in the source code.
 
-# 📋 API Endpoints
-
-| Method | Endpoint                    | Description       |
-| ------ | --------------------------- | ----------------- |
-| POST   | `/api/register/`            | Register a user   |
-| POST   | `/api/login/`               | Login             |
-| POST   | `/api/logout/`              | Logout            |
-| GET    | `/api/tasks/`               | List tasks        |
-| POST   | `/api/tasks/`               | Create a task     |
-| GET    | `/api/tasks/<id>/`          | Get a task        |
-| PATCH  | `/api/tasks/<id>/`          | Update a task     |
-| DELETE | `/api/tasks/<id>/`          | Delete a task     |
-| PATCH  | `/api/tasks/<id>/complete/` | Complete a task   |
-| GET    | `/api/categories/`          | List categories   |
-| POST   | `/api/categories/`          | Create a category |
-| GET    | `/api/user/dashboard/`      | User dashboard    |
-| GET    | `/api/admin/dashboard/`     | Admin dashboard   |
-
----
-
-# 📝 Example: Create a Task
-
-```http
-POST /api/tasks/
-Authorization: Token YOUR_TOKEN
-Content-Type: application/json
-```
-
-```json
+📡 Django API Endpoints
+Method	Endpoint	Description
+POST	/api/register/	Register a user
+POST	/api/login/	Login
+POST	/api/logout/	Logout
+GET	/api/tasks/	List tasks
+POST	/api/tasks/	Create a task
+GET	/api/tasks/<id>/	Get a task
+PATCH	/api/tasks/<id>/	Update a task
+DELETE	/api/tasks/<id>/	Delete a task
+PATCH	/api/tasks/<id>/complete/	Complete a task
+GET	/api/categories/	List categories
+POST	/api/categories/	Create a category
+📝 Example Task
 {
   "title": "Complete Django API project",
   "description": "Finish API documentation and testing",
@@ -312,233 +285,137 @@ Content-Type: application/json
   "status": "PENDING",
   "recurrence": "NONE"
 }
-```
 
 The authenticated user is automatically associated with the task.
 
----
+🔎 Filtering
 
-# 🔄 Example: Complete a Task
+Tasks can be filtered by:
 
-```http
-PATCH /api/tasks/1/complete/
-Authorization: Token YOUR_TOKEN
-```
+Status
+Priority
+Due date
+Category
 
-When a task is completed:
+Example:
 
-* Its status changes to `COMPLETED`
-* `completed_at` is recorded
-* If the task is recurring, the next task can be created automatically
+/api/tasks/?status=PENDING&priority=HIGH
+↕️ Ordering
 
----
+Tasks can be ordered by fields such as due date and priority.
 
-# 🗂️ Task Fields
+Example:
 
-| Field          | Description            |
-| -------------- | ---------------------- |
-| `title`        | Task title             |
-| `description`  | Task description       |
-| `due_date`     | Optional deadline      |
-| `priority`     | Task priority          |
-| `status`       | Current task status    |
-| `category_id`  | Optional category      |
-| `recurrence`   | Recurring task setting |
-| `completed_at` | Completion timestamp   |
-| `created_at`   | Creation timestamp     |
-| `updated_at`   | Last update timestamp  |
+/api/tasks/?ordering=-due_date
+🔁 Recurring Tasks
 
-### Priority Values
+Supported recurrence options:
 
-```text
-LOW
-MEDIUM
-HIGH
-```
-
-### Status Values
-
-```text
-PENDING
-IN_PROGRESS
-COMPLETED
-CANCELLED
-```
-
-### Recurrence Values
-
-```text
 NONE
 DAILY
 WEEKLY
 MONTHLY
-```
 
----
+When a recurring task is completed, the backend can create the next task according to its recurrence configuration.
 
-# 🔎 Filtering Examples
+⚡ Redis Caching
 
-### Filter by status
+The Django application uses Redis for caching.
 
-```text
-/api/tasks/?status=COMPLETED
-```
+Local Redis can be started with:
 
-### Filter by priority
+docker compose up -d redis
 
-```text
-/api/tasks/?priority=HIGH
-```
+The Django application can then connect to the local Redis instance.
 
-### Filter by due date
+🐳 Docker
 
-```text
-/api/tasks/?due_date=2026-10-01
-```
+The Django application includes Docker configuration.
 
-### Filter by category
+Build and start the services:
 
-```text
-/api/tasks/?category=Work
-```
-
-### Combine filters
-
-```text
-/api/tasks/?status=PENDING&priority=HIGH
-```
-
----
-
-# 🧪 Testing
-
-Run the complete test suite:
-
-```bash
-pytest -v
-```
-
-The tests help verify important application behavior before changes are deployed.
-
----
-
-# 🐳 Running with Docker
-
-Build and start the application:
-
-```bash
 docker compose up --build
-```
 
-Docker provides a consistent environment for running the application and its supporting services.
+Docker is used to provide consistent development and deployment environments.
 
----
+🧪 Testing
 
-# ☁️ Production Deployment
+Run the Django test suite:
 
-The application is deployed on Render.
+pytest -v
 
-The deployment demonstrates practical experience with:
+The tests cover important backend functionality including:
 
-* Django production configuration
-* PostgreSQL
-* Gunicorn
-* Docker
-* Static files
-* Environment variables
-* Cloud deployment
-* Production debugging
+User creation
+Authentication
+Task creation
+Task status changes
+Task completion
+Recurring tasks
+Filtering
+Ordering
+Categories
+☁️ Live API
 
-**Live API:**
+The Django REST API is deployed on Render:
 
 https://task-management-api-wpw5.onrender.com/api/
 
----
+The MCP server currently runs locally and communicates with the Django API.
 
-# 🧠 What This Project Demonstrates
+🧠 What This Project Demonstrates
 
-This project is more than a CRUD application.
+This project demonstrates practical experience with:
 
-It demonstrates my ability to:
-
-* Design RESTful APIs
-* Build backend systems with Django
-* Work with relational databases
-* Implement authentication and permissions
-* Build user-specific data access
-* Design task workflows
-* Implement filtering and ordering
-* Handle recurring business logic
-* Write automated tests
-* Containerize applications
-* Work with caching and background processing
-* Deploy backend applications
-* Debug and improve production-style applications
-
----
-
-# 📈 Development Approach
-
-The project was developed incrementally, with features added and tested step by step.
-
-The development process focused on:
-
-```text
-Problem
-   ↓
-Design
-   ↓
-Implementation
-   ↓
-Testing
-   ↓
-Debugging
-   ↓
-Deployment
-   ↓
-Improvement
-```
-
-This approach helped turn the project from a basic task API into a more production-oriented backend service.
-
----
-
-# 🔮 Future Improvements
+REST API development
+Django and Django REST Framework
+Authentication and permissions
+Database-backed applications
+Task workflows
+Recurring business logic
+API filtering and ordering
+Automated testing
+Redis caching
+Docker
+Cloud deployment
+MCP integration
+AI-to-backend communication
+Environment-based configuration
+🔮 Future Improvements
 
 Planned improvements include:
 
-* More comprehensive API documentation
-* CI/CD with GitHub Actions
-* Improved production monitoring
-* Application logging and metrics
-* Performance improvements
-* Additional background-processing features
-* Expanded test coverage
+Additional MCP tools
+MCP resources and prompts
+Better structured tool responses
+More comprehensive MCP tests
+CI/CD with GitHub Actions
+Production monitoring
+Logging and metrics
+Improved API documentation
+More advanced AI task-management capabilities
+👨‍💻 Author
 
----
-
-# 👨‍💻 Author
-
-**Brian Otieno**
+Brian Otieno
 
 Backend Developer focused on:
 
-* Python
-* Django
-* Django REST Framework
-* PostgreSQL
-* REST APIs
-* Docker
+Python
+Django
+Django REST Framework
+REST APIs
+PostgreSQL
+Docker
+MCP integration
 
 GitHub:
+
 https://github.com/otieno-backend
 
----
+⭐ Project
 
-# ⭐ Project
-
-If you find the project useful, feel free to **star the repository**.
+If you find the project useful, feel free to star the repository.
 
 Repository:
 
-https://github.com/otieno-backend/Task_Management_API
+https://github.com/otieno-backend/AI_Task_Management_Agent
