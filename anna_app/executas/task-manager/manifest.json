@@ -1,0 +1,64 @@
+{
+  "display_name": "Task Manager",
+  "version": "0.1.1",
+  "description": "Create tasks, list tasks, summarize progress, and generate daily plans through an authenticated Django REST API.",
+  "tools": [
+    {
+      "name": "ping",
+      "description": "Check whether the task manager plugin is running.",
+      "parameters": []
+    },
+    {
+      "name": "list_tasks",
+      "description": "List tasks belonging to the authenticated user.",
+      "parameters": []
+    },
+    {
+      "name": "create_task",
+      "description": "Create a task for the authenticated user.",
+      "parameters": [
+        {
+          "name": "title",
+          "type": "string",
+          "description": "The task title.",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "description": "Optional details about the task.",
+          "required": false
+        },
+        {
+          "name": "priority",
+          "type": "string",
+          "description": "LOW, MEDIUM, or HIGH. Defaults to MEDIUM.",
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "get_task_summary",
+      "description": "Summarize task statuses and overdue tasks.",
+      "parameters": []
+    },
+    {
+      "name": "get_daily_plan",
+      "description": "Prioritize unfinished tasks for a daily plan.",
+      "parameters": []
+    }
+  ],
+  "name": "task-manager",
+  "credentials": [
+    {
+      "name": "DJANGO_API_TOKEN",
+      "description": "Authentication token for the connected Django Task Management API.",
+      "required": true,
+      "sensitive": true
+    }
+  ],
+  "host_capabilities": [],
+  "runtime": {
+    "type": "binary"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "task-manager",
+  "slug": "task-manager",
+  "tagline": "Manage tasks with AI-powered planning",
+  "description": "Create and review tasks, track priorities, summarize progress, and generate a daily plan using a Django REST API.",
+  "category": "productivity",
+  "bundled_executas": {
+    "task-manager": {
+      "path": "./executas/task-manager"
+    }
+  }
+}

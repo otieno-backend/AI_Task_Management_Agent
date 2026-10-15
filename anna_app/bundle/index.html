@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Task Manager</title>
+    <script src="./anna-tool-ids.js"></script>
+    <script src="./app.js" type="module"></script>
+  </head>
+  <body>
+    <h1>Task Manager</h1>
+
+    <section>
+      <h2>Create a task</h2>
+      <form id="task-form">
+        <label for="task-title">Title</label>
+        <input id="task-title" name="title" required maxlength="200" />
+
+        <label for="task-description">Description</label>
+        <textarea id="task-description" name="description"></textarea>
+
+        <label for="task-priority">Priority</label>
+        <select id="task-priority" name="priority">
+          <option value="LOW">Low</option>
+          <option value="MEDIUM" selected>Medium</option>
+          <option value="HIGH">High</option>
+        </select>
+
+        <button type="submit">Create Task</button>
+      </form>
+    </section>
+
+    <section>
+      <h2>My tasks</h2>
+      <button id="list-btn" type="button">List My Tasks</button>
+      <button id="summary-btn" type="button">Task Summary</button>
+      <button id="plan-btn" type="button">Daily Plan</button>
+    </section>
+
+    <h2>Results</h2>
+    <pre id="status" aria-live="polite">Connecting to Anna…</pre>
+  </body>
+</html>

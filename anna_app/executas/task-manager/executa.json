@@ -1,0 +1,30 @@
+{
+  "slug": "task-manager",
+  "name": "task-manager",
+  "version": "0.1.1",
+  "executa_type": "tool",
+  "description": "Task management tools connected to an authenticated Django REST API",
+  "tool_id": "tool-dev-task-manager",
+  "type": "python",
+  "distribution": {
+    "type": "binary",
+    "binary_artifacts": {
+      "darwin-arm64": {
+        "path": "dist/releases/task-manager-darwin-arm64.tar.gz",
+        "entrypoint": "task-manager-executa"
+      },
+      "darwin-x86_64": {
+        "path": "dist/releases/task-manager-darwin-x86_64.tar.gz",
+        "entrypoint": "task-manager-executa"
+      },
+      "linux-x86_64": {
+        "path": "dist/releases/task-manager-linux-x86_64.tar.gz",
+        "entrypoint": "task-manager-executa"
+      },
+      "windows-x86_64": {
+        "path": "dist/releases/task-manager-windows-x86_64.zip",
+        "entrypoint": "task-manager-executa.exe"
+      }
+    }
+  }
+}

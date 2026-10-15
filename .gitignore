@@ -29,3 +29,28 @@ db.sqlite3-journal
 # IDE
 .vscode/
 .idea/
+.anna_token
+
+# Local credentials and temporary files
+**/.anna_token_temp
+taskhub/login_production.py
+get_anna_token.py
+taskhub/taskhub/settings.py.bak
+.env
+**/.env
+
+# Anna app local development artifacts
+anna_app/executas/**/.venv/
+anna_app/executas/**/.anna/
+anna_app/executas/**/*.egg-info/
+anna_app/executas/**/__pycache__/
+anna_app/executas/**/*.py[cod]
+anna_app/executas/**/*.backup
+
+# Anna reference template
+task-manager-template/
+
+# Local Anna files and backups
+anna_app/.anna/
+anna_app/executas/*/.anna/
+anna_app/executas/*/*.bak

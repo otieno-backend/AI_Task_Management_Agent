@@ -1,0 +1,98 @@
+name: Build Task Manager Executa
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build ${{ matrix.platform }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: darwin-arm64
+            runner: macos-14
+          - platform: darwin-x86_64
+            runner: macos-15-intel
+          - platform: linux-x86_64
+            runner: ubuntu-latest
+          - platform: windows-x86_64
+            runner: windows-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install PyInstaller
+        run: python -m pip install --upgrade pip pyinstaller
+
+      - name: Build executable
+        working-directory: anna_app/executas/task-manager
+        run: python -m PyInstaller --clean --onefile --name task-manager-executa task_manager_plugin.py
+
+      - name: Smoke-test executable startup
+        shell: bash
+        run: |
+          if [[ "${{ matrix.platform }}" == "windows-x86_64" ]]; then
+            printf '' | ./anna_app/executas/task-manager/dist/task-manager-executa.exe
+          else
+            printf '' | ./anna_app/executas/task-manager/dist/task-manager-executa
+          fi
+
+      - name: Package macOS or Linux executable
+        if: runner.os != 'Windows'
+        shell: bash
+        run: |
+          mkdir -p release-assets
+          cp anna_app/executas/task-manager/dist/task-manager-executa release-assets/task-manager-executa
+          tar -czf "task-manager-${{ matrix.platform }}.tar.gz" -C release-assets task-manager-executa
+          tar -tzf "task-manager-${{ matrix.platform }}.tar.gz"
+
+      - name: Package Windows executable
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force release-assets | Out-Null
+          Copy-Item anna_app/executas/task-manager/dist/task-manager-executa.exe release-assets/task-manager-executa.exe
+          Compress-Archive -Path release-assets/task-manager-executa.exe -DestinationPath task-manager-${{ matrix.platform }}.zip -Force
+          tar -tf task-manager-${{ matrix.platform }}.zip
+
+      - name: Upload platform archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: task-manager-${{ matrix.platform }}
+          path: task-manager-${{ matrix.platform }}.*
+          if-no-files-found: error
+          retention-days: 14
+
+  collect:
+    name: Collect all four archives
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download platform archives
+        uses: actions/download-artifact@v4
+        with:
+          pattern: task-manager-*
+          path: release-assets
+          merge-multiple: true
+
+      - name: List collected archives
+        run: ls -lh release-assets
+
+      - name: Upload combined archives
+        uses: actions/upload-artifact@v4
+        with:
+          name: task-manager-binaries
+          path: release-assets/*
+          if-no-files-found: error
+          retention-days: 14
