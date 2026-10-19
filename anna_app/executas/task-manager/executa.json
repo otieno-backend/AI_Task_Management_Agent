@@ -4,7 +4,7 @@
   "version": "0.1.1",
   "executa_type": "tool",
   "description": "Task management tools connected to an authenticated Django REST API",
-  "tool_id": "tool-dev-task-manager",
+  "tool_id": "tool-brian-otieno-task-manager-tgq7tqfm",
   "type": "python",
   "distribution": {
     "type": "binary",

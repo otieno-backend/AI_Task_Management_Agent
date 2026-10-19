@@ -1,8 +1,8 @@
 {
   "name": "task-manager",
   "slug": "task-manager",
-  "tagline": "Manage tasks with AI-powered planning",
-  "description": "Create and review tasks, track priorities, summarize progress, and generate a daily plan using a Django REST API.",
+  "tagline": "Organize tasks, track progress, and plan your day",
+  "description": "Task Manager is a productivity app that helps users create and review tasks, summarize progress, and organize daily work. It connects to an authenticated Django REST API.\n\nFeatures:\n- Create tasks through the app interface.\n- List and review existing tasks.\n- View task summaries and progress.\n- Generate a daily plan to help organize work.\n- Use authenticated API integration to access task data.\n\nHow to use:\n1. Configure the required DJANGO_API_TOKEN credential for your connected Task Management API.\n2. Open Task Manager in Anna.\n3. Use the task creation form to add tasks.\n4. Select List My Tasks to review tasks.\n5. Select Task Summary to review task information.\n6. Select Daily Plan to generate a daily plan.\n\nA working API connection and valid authentication token are required.",
   "category": "productivity",
   "bundled_executas": {
     "task-manager": {
