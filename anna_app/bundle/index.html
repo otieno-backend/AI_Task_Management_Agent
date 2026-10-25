@@ -1,43 +1,224 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Task Manager</title>
-    <script src="./anna-tool-ids.js"></script>
-    <script src="./app.js" type="module"></script>
-  </head>
-  <body>
-    <h1>Task Manager</h1>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#f6f7fb" />
+  <meta name="description" content="A simple, smart workspace to organize tasks and plan your day." />
+  <title>Task Manager | Your workspace</title>
+  <link rel="stylesheet" href="./styles.css" />
+  <script src="./anna-tool-ids.js"></script>
+  <script src="./app.js" type="module"></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">✓</div>
+        <div>
+          <p class="brand-name">Task Manager</p>
+          <p class="brand-caption">Your personal workspace</p>
+        </div>
+      </div>
 
-    <section>
-      <h2>Create a task</h2>
-      <form id="task-form">
-        <label for="task-title">Title</label>
-        <input id="task-title" name="title" required maxlength="200" />
+      <nav aria-label="Main navigation">
+        <p class="nav-label">Workspace</p>
+        <button class="nav-button active" type="button" data-view="overview">
+          <span class="nav-icon" aria-hidden="true">⌂</span> Overview
+        </button>
+        <button class="nav-button" type="button" data-view="tasks">
+          <span class="nav-icon" aria-hidden="true">☷</span> My tasks
+        </button>
+        <button class="nav-button" type="button" data-view="summary">
+          <span class="nav-icon" aria-hidden="true">▤</span> Task summary
+        </button>
+        <button class="nav-button" type="button" data-view="plan">
+          <span class="nav-icon" aria-hidden="true">◷</span> Daily plan
+        </button>
+      </nav>
 
-        <label for="task-description">Description</label>
-        <textarea id="task-description" name="description"></textarea>
+      <div class="sidebar-note">
+        <strong>One task at a time ✨</strong>
+        <p>Small steps add up. Keep your priorities clear and make today count.</p>
+      </div>
+    </aside>
 
-        <label for="task-priority">Priority</label>
-        <select id="task-priority" name="priority">
-          <option value="LOW">Low</option>
-          <option value="MEDIUM" selected>Medium</option>
-          <option value="HIGH">High</option>
-        </select>
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">YOUR PRODUCTIVITY SPACE</p>
+          <h1 class="page-title" id="page-title">Good to see you!</h1>
+          <p class="page-subtitle" id="page-subtitle">
+            Organize your work, focus on what matters, and make progress.
+          </p>
+        </div>
+        <div class="avatar" aria-label="Task Manager workspace">TM</div>
+      </header>
 
-        <button type="submit">Create Task</button>
-      </form>
-    </section>
+      <section class="stats-grid" aria-label="Task statistics">
+        <article class="stat-card">
+          <div class="stat-top">
+            <span class="stat-label">Total tasks</span>
+            <span class="stat-icon" aria-hidden="true">▤</span>
+          </div>
+          <p class="stat-number" id="stat-total">—</p>
+          <p class="stat-hint">Tasks in your workspace</p>
+        </article>
 
-    <section>
-      <h2>My tasks</h2>
-      <button id="list-btn" type="button">List My Tasks</button>
-      <button id="summary-btn" type="button">Task Summary</button>
-      <button id="plan-btn" type="button">Daily Plan</button>
-    </section>
+        <article class="stat-card">
+          <div class="stat-top">
+            <span class="stat-label">Pending</span>
+            <span class="stat-icon" aria-hidden="true">◷</span>
+          </div>
+          <p class="stat-number" id="stat-pending">—</p>
+          <p class="stat-hint">Still waiting to be done</p>
+        </article>
 
-    <h2>Results</h2>
-    <pre id="status" aria-live="polite">Connecting to Anna…</pre>
-  </body>
+        <article class="stat-card">
+          <div class="stat-top">
+            <span class="stat-label">Completed</span>
+            <span class="stat-icon" aria-hidden="true">✓</span>
+          </div>
+          <p class="stat-number" id="stat-completed">—</p>
+          <p class="stat-hint">Tasks you've finished</p>
+        </article>
+
+        <article class="stat-card">
+          <div class="stat-top">
+            <span class="stat-label">Overdue</span>
+            <span class="stat-icon" aria-hidden="true">!</span>
+          </div>
+          <p class="stat-number" id="stat-overdue">—</p>
+          <p class="stat-hint">Tasks needing attention</p>
+        </article>
+      </section>
+
+      <div class="content-grid">
+        <div>
+          <section class="panel" id="create-section">
+            <div class="panel-heading">
+              <div>
+                <h2 class="panel-title">Create a task</h2>
+                <p class="panel-description">Turn your next goal into an actionable step.</p>
+              </div>
+              <span class="stat-icon" aria-hidden="true">＋</span>
+            </div>
+
+            <form id="task-form" class="form-grid">
+              <div class="field">
+                <label for="task-title">Task title</label>
+                <input
+                  id="task-title"
+                  name="title"
+                  type="text"
+                  placeholder="e.g. Finish project proposal"
+                  required
+                  maxlength="200"
+                  autocomplete="off"
+                />
+              </div>
+
+              <div class="field">
+                <label for="task-description">Description <span style="font-weight:400;color:#737991">(optional)</span></label>
+                <textarea
+                  id="task-description"
+                  name="description"
+                  placeholder="Add a few details to help you get started..."
+                ></textarea>
+              </div>
+
+              <div class="field">
+                <label for="task-priority">Priority</label>
+                <select id="task-priority" name="priority">
+                  <option value="LOW">Low — when time allows</option>
+                  <option value="MEDIUM" selected>Medium — important</option>
+                  <option value="HIGH">High — top priority</option>
+                </select>
+              </div>
+
+              <button class="primary-button full-width" id="create-btn" type="submit">
+                <span aria-hidden="true">＋</span> Create task
+              </button>
+            </form>
+          </section>
+
+          <section class="panel result-panel" id="results-section" aria-labelledby="results-title">
+            <div class="panel-heading">
+              <div>
+                <h2 class="panel-title" id="results-title">Your results</h2>
+                <p class="panel-description" id="result-subtitle">
+                  Your task activity and updates will appear here.
+                </p>
+              </div>
+            </div>
+            <div id="status" class="result-content" aria-live="polite" aria-atomic="true">
+              <div class="result-message">
+                <span class="result-icon" aria-hidden="true">✦</span>
+                <span>Connecting to Anna. Your workspace will be ready shortly.</span>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div>
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <h2 class="panel-title">Quick actions</h2>
+                <p class="panel-description">Choose what you'd like to work on.</p>
+              </div>
+            </div>
+
+            <div class="action-stack">
+              <button class="secondary-button" id="list-btn" type="button">
+                <span class="action-symbol" aria-hidden="true">☷</span>
+                <span class="action-copy">
+                  <span>List my tasks</span>
+                  <small>See what needs your attention</small>
+                </span>
+              </button>
+
+              <button class="secondary-button" id="summary-btn" type="button">
+                <span class="action-symbol" aria-hidden="true">▤</span>
+                <span class="action-copy">
+                  <span>Task summary</span>
+                  <small>Review your progress</small>
+                </span>
+              </button>
+
+              <button class="secondary-button" id="plan-btn" type="button">
+                <span class="action-symbol" aria-hidden="true">◷</span>
+                <span class="action-copy">
+                  <span>Daily plan</span>
+                  <small>Focus on upcoming work</small>
+                </span>
+              </button>
+            </div>
+
+            <div class="status-line">
+              <span class="status-dot" aria-hidden="true"></span>
+              <span id="connection-label">Connecting to your workspace…</span>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-heading">
+              <div>
+                <h2 class="panel-title">A little reminder</h2>
+                <p class="panel-description">Progress over perfection.</p>
+              </div>
+            </div>
+            <p style="margin:0;color:#626981;font-size:14px">
+              Start with your highest-priority task, give it your attention, and build momentum one step at a time.
+            </p>
+          </section>
+        </div>
+      </div>
+
+      <footer class="footer">
+        Task Manager · A clearer way to organize your day
+      </footer>
+    </main>
+  </div>
+</body>
 </html>
