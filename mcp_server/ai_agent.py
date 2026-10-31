@@ -12,6 +12,7 @@ from mcp import ClientSession
 from mcp.client.stdio import StdioServerParameters, stdio_client
 from openai import OpenAI
 from task_creation import create_task_flow
+from task_updating import update_task_flow
 
 BASE_DIR = Path(__file__).resolve().parent
 load_dotenv(BASE_DIR / ".env")
@@ -321,6 +322,17 @@ async def run_agent(user_message: str):
                     print("Could not read the API task list:", exc)
                     return
 
+                # Handle explicit task-update requests.
+                if is_task_update_request(user_message):
+                    await update_task_flow(
+                        session,
+                        client,
+                        MODEL,
+                        user_message,
+                        tasks,
+                    )
+                    return
+
                 ranked_tasks = rank_tasks(tasks)
                 ranked_task_data = json.dumps(ranked_tasks, indent=2)
                 missing_information = summarize_missing_information(tasks)
@@ -372,6 +384,17 @@ async def run_agent(user_message: str):
             f"Agent error ({type(exc).__name__}). "
             "Check API access, configuration, and server logs."
         )
+
+
+def is_task_update_request(user_message):
+    """Recognize explicit requests to update an existing task."""
+    pattern = (
+        r"^(?:(?:please|can you|could you|would you|"
+        r"i want you to|i need you to)\s+)*"
+        r"(?:update|edit|change|modify)\b.*\b(?:task|todo)\b"
+    )
+    return bool(re.search(pattern, user_message.strip(), re.IGNORECASE))
+
 
 if __name__ == "__main__":
     message = input("What would you like help with? ").strip()
