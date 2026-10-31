@@ -1,11 +1,12 @@
 import sys
+from pathlib import Path
 import os
 import requests
 from typing import Optional
 from dotenv import load_dotenv
 from mcp.server.mcpserver import MCPServer
 
-load_dotenv()
+load_dotenv(Path(__file__).resolve().parent / ".env")
 
 mcp = MCPServer("Task Management Server")
 
@@ -41,7 +42,7 @@ def list_tasks() -> str:
         response = requests.get(
             f"{DJANGO_API_URL}/tasks/",
             headers=get_headers(),
-            timeout=10,
+            timeout=30,
         )
 
         if response.status_code == 200:
@@ -90,7 +91,7 @@ def create_task(
             f"{DJANGO_API_URL}/tasks/",
             headers=get_headers(),
             json=data,
-            timeout=10,
+            timeout=30,
         )
 
         if response.status_code in (200, 201):
@@ -116,7 +117,7 @@ def get_task(task_id: int) -> str:
         response = requests.get(
             f"{DJANGO_API_URL}/tasks/{task_id}/",
             headers=get_headers(),
-            timeout=10,
+            timeout=30,
         )
 
         if response.status_code == 200:
@@ -181,7 +182,7 @@ def update_task(
             f"{DJANGO_API_URL}/tasks/{task_id}/",
             headers=get_headers(),
             json=data,
-            timeout=10,
+            timeout=30,
         )
 
         if response.status_code == 200:
@@ -210,7 +211,7 @@ def complete_task(task_id: int) -> str:
         response = requests.patch(
             f"{DJANGO_API_URL}/tasks/{task_id}/complete/",
             headers=get_headers(),
-            timeout=10,
+            timeout=30,
         )
 
         if response.status_code in (200, 201):
@@ -258,7 +259,7 @@ def find_tasks(
             f"{DJANGO_API_URL}/tasks/",
             headers=get_headers(),
             params=params,
-            timeout=10,
+            timeout=30,
         )
 
         if response.status_code == 200:
@@ -283,7 +284,7 @@ def find_overdue_tasks() -> str:
         response = requests.get(
             f"{DJANGO_API_URL}/tasks/",
             headers=get_headers(),
-            timeout=10,
+            timeout=30,
         )
 
         if response.status_code != 200:
@@ -334,7 +335,7 @@ def get_task_summary() -> str:
         response = requests.get(
             f"{DJANGO_API_URL}/tasks/",
             headers=get_headers(),
-            timeout=10,
+            timeout=30,
         )
 
         if response.status_code != 200:
@@ -411,7 +412,7 @@ def find_tasks_due_soon(days: int = 3) -> str:
         response = requests.get(
             f"{DJANGO_API_URL}/tasks/",
             headers=get_headers(),
-            timeout=10,
+            timeout=30,
         )
 
         if response.status_code != 200:
@@ -467,7 +468,7 @@ def get_next_tasks(limit: int = 5) -> str:
         response = requests.get(
             f"{DJANGO_API_URL}/tasks/",
             headers=get_headers(),
-            timeout=10,
+            timeout=30,
         )
 
         if response.status_code != 200:
@@ -560,7 +561,7 @@ def get_today_tasks() -> str:
         response = requests.get(
             f"{DJANGO_API_URL}/tasks/",
             headers=get_headers(),
-            timeout=10,
+            timeout=30,
         )
 
         if response.status_code != 200:
@@ -612,7 +613,7 @@ def get_daily_plan() -> str:
         response = requests.get(
             f"{DJANGO_API_URL}/tasks/",
             headers=get_headers(),
-            timeout=10,
+            timeout=30,
         )
 
         if response.status_code != 200:
